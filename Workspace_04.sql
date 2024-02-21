@@ -41,6 +41,7 @@ BEGIN
         DBMS_OUTPUT.PUT_LINE('NODATA FOUND FOR YOU');
     END IF;
 END DDCKBAL_SP;
+/
 
 DECLARE
     AMT    NUMBER(30);
@@ -55,3 +56,4 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE('REMAINING BAL IS '
                          || REMAIN);
 END;
+/

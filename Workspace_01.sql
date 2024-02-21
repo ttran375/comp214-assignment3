@@ -19,6 +19,7 @@ BEGIN
     WHERE
         IDPROJ = Pro_ID;
 END DDPROJ_SP;
+/
 
 DECLARE
  -- d_project DD_PROJECT%ROWTYPE;
@@ -40,3 +41,4 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE(d_project.PROJFUNDGOAL);
     DBMS_OUTPUT.PUT_LINE(d_project.PROJCOORD);
 END;
+/

@@ -36,3 +36,4 @@ EXCEPTION
     WHEN NO_MONTH THEN
         DBMS_OUTPUT.PUT_LINE('No payment information');
 END DDCKPAY_SP;
+/

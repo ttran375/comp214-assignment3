@@ -19,6 +19,7 @@ BEGIN
         P_RESP := TRUE;
     END IF;
 END DDPAY_SP;
+/
 
 DECLARE
     P_ID   DD_PLEDGE.IDPLEDGE%type := 105;
@@ -33,3 +34,4 @@ BEGIN
                 'FALSE'
         END );
 END;
+/
