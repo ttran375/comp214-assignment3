@@ -30,11 +30,9 @@ BEGIN
       EXECUTE IMMEDIATE ('DROP ' || c.object_type || ' ' || c.object_name);
    END LOOP;
 END;
-/
 
 BEGIN
    FOR v IN (SELECT view_name FROM user_views) LOOP
       EXECUTE IMMEDIATE 'DROP VIEW ' || v.view_name;
    END LOOP;
 END;
-/
