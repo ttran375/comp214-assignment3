@@ -1,3 +1,9 @@
+-- Question 1 (5 marks)
+-- Create a procedure named DDPROJ_SP that retrieves project information for a specific project
+-- based on a project ID. The procedure should have two parameters: one to accept a project ID
+-- value and another to return all data for the specified project. Use a record variable to have the
+-- procedure return all database column values for the selected project. Test the procedure with an
+-- anonymous block.
 CREATE OR REPLACE PROCEDURE DDPROJ_SP (
     Pro_ID IN DD_PROJECT.IDPROJ%type,
     d_project OUT DD_PROJECT%ROWTYPE
