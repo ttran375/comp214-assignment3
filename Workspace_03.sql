@@ -16,12 +16,16 @@ CREATE OR REPLACE PROCEDURE DDCKPAY_SP (
     P_AMT IN NUMBER,
     RESPONCE OUT VARCHAR2
 ) IS
+    -- Declaration of variables to store pledge details, the number of planned payment months, and the final planned payment amount.
     M_MONTH   DD_PLEDGE.PAYMONTHS%TYPE;
     M_ID      DD_PLEDGE.IDPLEDGE%TYPE;
     M_AMT     DD_PLEDGE.PLEDGEAMT%TYPE;
     FINAL_AMT DD_PLEDGE.PLEDGEAMT%TYPE;
+    
+    -- Custom exception for the case when the planned payment months are zero.
     NO_MONTH EXCEPTION;
 BEGIN
+    -- Retrieving pledge details (ID, amount, and planned months) based on the provided pledge ID.
     SELECT
         IDPLEDGE,
         PLEDGEAMT,
@@ -32,11 +36,16 @@ BEGIN
         DD_PLEDGE
     WHERE
         IDPLEDGE = P_ID;
+    
+    -- Checking if the planned payment months are zero and raising the NO_MONTH exception if true.
     IF M_MONTH = 0 THEN
         RAISE NO_MONTH;
     END IF;
 
-    FINAL_AMT := M_AMT /M_MONTH;
+    -- Calculating the final planned payment amount per month.
+    FINAL_AMT := M_AMT / M_MONTH;
+    
+    -- Validating the payment amount and setting the RESPONCE accordingly.
     IF P_AMT = FINAL_AMT THEN
         RESPONCE := 'CORRECT PAYMENT';
     ELSIF P_AMT != FINAL_AMT THEN
@@ -44,6 +53,7 @@ BEGIN
                                         || FINAL_AMT);
     END IF;
 EXCEPTION
+    -- Handling exceptions, including the case when no data or no payment information is found.
     WHEN NO_DATA_FOUND THEN
         DBMS_OUTPUT.PUT_LINE('No payment information');
     WHEN NO_MONTH THEN

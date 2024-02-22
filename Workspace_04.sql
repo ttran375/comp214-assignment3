@@ -17,12 +17,14 @@ CREATE OR REPLACE PROCEDURE DDCKBAL_SP (
     p_TOTAL OUT dd_payment.payamt%TYPE,
     p_REMAIN OUT dd_payment.payamt%TYPE
 ) IS
+    -- Declaration of variables to store pledge and payment details.
     Z_MPMT dd_pledge.pledgeamt%TYPE;
     Z_PID  dd_pledge.idpledge%TYPE;
     Z_PMT  dd_pledge.pledgeamt%TYPE;
     Z_MON  DD_PLEDGE.IDSTATUS%TYPE;
     TOTALP NUMBER;
 BEGIN
+    -- Query to retrieve pledge and payment details using a JOIN between DD_PLEDGE and DD_PAYMENT.
     SELECT
         MT.PAYAMT,
         PL.IDPLEDGE,
@@ -44,9 +46,10 @@ BEGIN
         PL.IDPLEDGE,
         PL.PLEDGEAMT,
         PL.IDSTATUS;
+
+    -- Checking the pledge status and calculating the balance accordingly.
     IF Z_MON = 10 THEN
         p_pledgeamt := Z_MPMT;
- /* p_pledgeamt :=  1;*/
         p_TOTAL := TOTALP * Z_MPMT;
         p_REMAIN := Z_PMT - p_TOTAL;
     ELSE
@@ -56,17 +59,20 @@ BEGIN
 END DDCKBAL_SP;
 /
 
+-- This is an anonymous PL/SQL block that demonstrates the usage of the DDCKBAL_SP procedure.
+
 DECLARE
+    -- Declaration of variables to store the results of the procedure.
     AMT    NUMBER(30);
     TATAL  NUMBER(30);
     REMAIN NUMBER(30);
 BEGIN
+    -- Calling the DDCKBAL_SP procedure with a specific pledge ID ('110') and storing the results in the declared variables.
     DDCKBAL_SP('110', AMT, TATAL, REMAIN);
-    DBMS_OUTPUT.PUT_LINE('PAYMENT PER MONTH IS '
-                         || AMT);
-    DBMS_OUTPUT.PUT_LINE('TOTAL PAYMENT TO DATE IS IS '
-                         || TATAL);
-    DBMS_OUTPUT.PUT_LINE('REMAINING BAL IS '
-                         || REMAIN);
+    
+    -- Displaying the results using DBMS_OUTPUT.
+    DBMS_OUTPUT.PUT_LINE('PAYMENT PER MONTH IS ' || AMT);
+    DBMS_OUTPUT.PUT_LINE('TOTAL PAYMENT TO DATE IS ' || TATAL);
+    DBMS_OUTPUT.PUT_LINE('REMAINING BAL IS ' || REMAIN);
 END;
 /

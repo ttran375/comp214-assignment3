@@ -9,9 +9,11 @@ CREATE OR REPLACE PROCEDURE DDPAY_SP (
     P_ID IN NUMBER,
     P_RESP OUT BOOLEAN
 ) IS
+ -- Declaration of variables to store the pledge status and the number of payment months.
     STATUS  NUMBER;
     MON_PAY NUMBER;
 BEGIN
+ -- Retrieving pledge status and the number of payment months from the DD_PLEDGE table based on the provided pledge ID.
     SELECT
         IDSTATUS,
         PAYMONTHS INTO STATUS,
@@ -20,6 +22,7 @@ BEGIN
         DD_PLEDGE
     WHERE
         IDPLEDGE = P_ID;
+ -- Checking conditions to determine the payment status and setting P_RESP accordingly.
     IF STATUS != 10 AND MON_PAY > 1 THEN
         P_RESP := FALSE;
     ELSIF STATUS = 10 AND MON_PAY > 0 THEN
@@ -28,11 +31,17 @@ BEGIN
 END DDPAY_SP;
 /
 
+-- This is an anonymous PL/SQL block that demonstrates the usage of the DDPAY_SP procedure.
+
 DECLARE
+ -- Declaration of a variable P_ID with a sample pledge ID (105).
     P_ID   DD_PLEDGE.IDPLEDGE%type := 105;
+ -- Declaration of a variable P_RESP to store the output of the procedure.
     P_RESP BOOLEAN;
 BEGIN
+ -- Calling the DDPAY_SP procedure with the provided pledge ID (105) and storing the output in the P_RESP variable.
     DDPAY_SP(P_ID, P_RESP);
+ -- Displaying the result using DBMS_OUTPUT.
     dbms_output.put_line(
         CASE
             WHEN P_RESP THEN
